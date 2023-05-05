@@ -1,0 +1,27 @@
+{
+	"name": "server",
+	"author": "Henok R. Bedassa",
+	"web": "henok.us",
+	"email": "jackbalageru@yahoo.com",
+	"description": "",
+	"main": "index.js",
+	"dependencies": {
+		"axios": "^0.26.0",
+		"bcryptjs": "^2.4.3",
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.0",
+		"express": "^4.18.2",
+		"jsonwebtoken": "^9.0.0",
+		"mongoose": "^6.2.4",
+		"netlify-lambda": "^2.0.16",
+		"nodemailer": "^6.9.1",
+		"nodemon": "^2.0.15",
+		"serverless-http": "^3.2.0",
+		"the": "^1.0.2"
+	},
+	"scripts": {
+		"start": "node ./index.js -w",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	}
+}
