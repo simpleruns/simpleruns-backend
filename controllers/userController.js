@@ -137,7 +137,7 @@ const transporter = nodemailer.createTransport({
 
 const sendResetPasswordEmail = (email, token) => {
 	console.log(email, token);
-	const resetPasswordLink = `http://localhost:3000/auth/${token}`;
+	const resetPasswordLink = `https://simpleruns-frontend.vercel.app/auth/${token}`;
 	const mailOptions = {
 		from: 'smartluckyman1107@gmail.com',
 		to: email,
