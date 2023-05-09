@@ -37,7 +37,6 @@ const user_login = (req, res) => {
 		if (!user) {
 			res.status(404).send("This email doesn't exist!");
 		} else {
-			console.log(user._id);
 			const isMatch = bcrypt.compare(req.body.password, user.password);
 			if (isMatch) {
 				const payload = {
@@ -136,8 +135,7 @@ const transporter = nodemailer.createTransport({
 
 
 const sendResetPasswordEmail = (email, token) => {
-	console.log(email, token);
-	const resetPasswordLink = `https://simpleruns-frontend.vercel.app/auth/${token}`;
+	const resetPasswordLink = `http://170.64.154.214/frontend/auth/${token}`;
 	const mailOptions = {
 		from: 'smartluckyman1107@gmail.com',
 		to: email,
@@ -171,7 +169,6 @@ const verify_email = (req, res) => {
 }
 
 const update_password = (req, res) => {
-	console.log(req.body);
 	const email = req.body.email,
 		password = req.body.password;
 	User.findOne({ email: email }, async function (err, user) {
