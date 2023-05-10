@@ -16,6 +16,13 @@ const UserSchema = new mongoose.Schema({
 	},
 	password: {
 		type: String,
+	},
+	logo: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Logo"
+	},
+	logoTitle: {
+		type: String,
 	}
 });
 let User = mongoose.model('User', UserSchema);

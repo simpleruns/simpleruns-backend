@@ -32,7 +32,7 @@ var upload = multer({
 
 router.get("/", driverController.driver_index);
 router.post("/create", upload.fields([{ name: 'avatar', maxCount: 1 }, { name: "licensePhoto", maxCount: 10 }]), driverController.driver_create);
-router.put('/:id', driverController.driver_update);
+router.put('/:id', upload.fields([{ name: 'avatar', maxCount: 1 }, { name: "licensePhoto", maxCount: 10 }]), driverController.driver_update);
 
 router.get("/:id", driverController.driver_getOne);
 

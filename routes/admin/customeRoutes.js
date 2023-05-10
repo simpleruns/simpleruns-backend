@@ -27,15 +27,15 @@ var upload = multer({
     }
 });
 
-router.get("/", driverController.driver_index);
-router.post("/create", driverController.driver_create);
-router.put('/:id', driverController.driver_update);
+router.get("/", upload.single('avatar'), customerController.customer_index);
+router.post("/create", customerController.customer_create);
+router.put('/:id', upload.single('avatar'), customerController.customer_update);
 
-router.get("/:id", driverController.driver_getOne);
 
-router.put('/approve/:id', driverController.driver_approve);
+router.get("/:id", customerController.customer_getOne);
+router.put('/approve/:id', customerController.customer_approve);
 
-router.delete("/:id", driverController.driver_delete);
+router.delete("/:id", customerController.customer_delete);
 
 
 module.exports = router;

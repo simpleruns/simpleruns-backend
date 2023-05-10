@@ -8,12 +8,22 @@ const DIR = './public/';
 const driver_index = (req, res) => {
 
     Driver.find(function (err, drivers) {
+        var totalCount;
         if (req.query.search) {
             drivers = drivers.filter(item => (item.firstname + item.lastname + item.numberPlate + item.VIN).includes(req.query.search));
         }
         if (req.query.status) {
             drivers = drivers.filter(item => (item.approved == (req.query.status == "approved" ? true : false)));
         }
+        // if (req.query.page) {
+        //     var from, to;
+        //     from = parseInt(req.query.page) * 10;
+        //     to = parseInt(req.query.page + 1) * 10 - 1;
+        //     drivers.slice(from, to);
+        // }
+
+        // totalCount = drivers.length;
+        // res.json({ drivers, totalCount });
         res.json(drivers);
     });
 };
@@ -58,12 +68,27 @@ const driver_getOne = async (req, res) => {
 
 
 const driver_update = async (req, res) => {
+    const reqLicensePhotos = [];
+
+    const url = req.protocol + '://' + req.get('host');
+
+
+    for (var i = 0; i < req.files.licensePhoto.length; i++) {
+        reqLicensePhotos.push(url + '/public/' + req.files.licensePhoto[i].filename)
+    }
+
+    reqAvatar = url + '/public/' + req.files.avatar[0].filename;
+    // console.log(reqLicensePhotos, reqAvatar);
+    req.body.licensePhoto = reqLicensePhotos;
+    req.body.avatar = reqAvatar;
 
     if (req.body.resetPassword) {
+        // console.log("reset");
         await hashPassword(req);
         await Driver.findByIdAndUpdate(req.params.id, req.body)
             .then(function (driver) {
-                res.json("Driver updated");
+
+                res.json(driver);
             })
             .catch(function (err) {
                 res.status(422).send("Driver update failed.");
@@ -73,6 +98,19 @@ const driver_update = async (req, res) => {
             if (driver) {
                 driver.firstname = req.body.firstname;
                 driver.lastname = req.body.lastname;
+                driver.role = req.body.role;
+                driver.avatar = req.body.avatar;
+                driver.birthDate = req.body.birthDate;
+                driver.licenseNumber = req.body.licenseNumber;
+                driver.cardNumber = req.body.cardNumber;
+                driver.expireDate = req.body.expireDate;
+                driver.publishedDate = req.body.publishedDate;
+                driver.licenseCalss = req.body.licenseCalss;
+                driver.licenseState = req.body.licenseState;
+                driver.licensePhoto = req.body.licensePhoto;
+                driver.insurances = req.body.insurances;
+                driver.workCompensation = req.body.workCompensation;
+                driver.truckRegistration = req.body.truckRegistration;
                 driver.email = req.body.email;
                 driver.phone = req.body.phone;
                 driver.year = req.body.year;
