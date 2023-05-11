@@ -35,9 +35,9 @@ const driver_create = async (req, res) => {
 
 
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
-        reqLicensePhotos.push(url + '/public/' + req.files.licensePhoto[i].filename)
+        reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/public/' + req.files.licensePhoto[i].filename) })
     }
-    reqAvatar = url + '/public/' + req.files.avatar[0].filename;
+    reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/public/' + req.files.avatar[0].filename) };
     req.body.licensePhoto = reqLicensePhotos;
     req.body.avatar = reqAvatar;
     await Driver.deleteOne({ email: req.body.email }).then(function () {
@@ -69,16 +69,15 @@ const driver_getOne = async (req, res) => {
 
 const driver_update = async (req, res) => {
     const reqLicensePhotos = [];
-
     const url = req.protocol + '://' + req.get('host');
 
 
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
-        reqLicensePhotos.push(url + '/public/' + req.files.licensePhoto[i].filename)
+        reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/public/' + req.files.licensePhoto[i].filename) })
     }
+    reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/public/' + req.files.avatar[0].filename) };
 
-    reqAvatar = url + '/public/' + req.files.avatar[0].filename;
-    // console.log(reqLicensePhotos, reqAvatar);
+    console.log(reqLicensePhotos, reqAvatar);
     req.body.licensePhoto = reqLicensePhotos;
     req.body.avatar = reqAvatar;
 
