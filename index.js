@@ -15,7 +15,7 @@ connection();
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
-app.use('/api/public', express.static('public'));
+app.use('/public', express.static('public'));
 
 // routes
 app.use("/api/users", userRoutes);
@@ -23,7 +23,7 @@ app.use("/api/users", userRoutes);
 //admin 
 app.use("/api/admin/drivers", adminDriverRoutes);
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('Hello World!');
 })
 
