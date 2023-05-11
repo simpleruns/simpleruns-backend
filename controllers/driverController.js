@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const hashPassword = require("../utils/common.utils");
 
-const DIR = './public/';
+const DIR = './api/public/';
 // Display All driver Data
 const driver_index = (req, res) => {
 
@@ -35,9 +35,9 @@ const driver_create = async (req, res) => {
 
 
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
-        reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/public/' + req.files.licensePhoto[i].filename) })
+        reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
     }
-    reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/public/' + req.files.avatar[0].filename) };
+    reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
     req.body.licensePhoto = reqLicensePhotos;
     req.body.avatar = reqAvatar;
     await Driver.deleteOne({ email: req.body.email }).then(function () {
@@ -73,9 +73,9 @@ const driver_update = async (req, res) => {
 
 
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
-        reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/public/' + req.files.licensePhoto[i].filename) })
+        reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
     }
-    reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/public/' + req.files.avatar[0].filename) };
+    reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
 
     console.log(reqLicensePhotos, reqAvatar);
     req.body.licensePhoto = reqLicensePhotos;
