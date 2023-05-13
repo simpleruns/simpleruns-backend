@@ -11,32 +11,30 @@ const customer_index = (req, res) => {
     ) {
         var totalCount;
         if (req.query.search) {
-            customers = customers.filter(item => (item.firstname + item.lastname + item.numberPlate + item.VIN).includes(req.query.search));
+            customers = customers.filter(item => (item.firstname + item.lastname + item.email + item.address).includes(req.query.search));
         }
         if (req.query.status) {
-            customers = customers.filter(item => (item.approved == (req.query.status == "approved" ? true : false)));
+            customers = customers.filter(item => (item.approved == ((req.query.status == "approved") ? true : false)));
         }
+        totalCount = customers.length;
         if (req.query.page) {
             var from, to;
             from = parseInt(req.query.page) * 10;
             to = parseInt(req.query.page + 1) * 10 - 1;
-            drivers.slice(from, to);
+            customers.slice(from, to);
 
         }
 
-        totalCount = customers.length;
         res.json({ customers, totalCount });
     });
 };
 
 // Create New driver
 const customer_create = async (req, res) => {
-    const reqLicensePhotos = [];
     const url = req.protocol + '://' + req.get('host');
 
-
-    reqAvatar = url + '/public/' + req.files.avatar[0].filename;
-    req.body.avatar = reqAvatar;
+    reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
+    req.body.photo = reqAvatar;
     await Customer.deleteOne({ email: req.body.email }).then(function () {
         console.log('deleted');
     });
@@ -66,41 +64,20 @@ const customer_getOne = async (req, res) => {
 
 const customer_update = async (req, res) => {
 
-    if (req.body.resetPassword) {
-        await hashPassword(req);
-        await Customer.findByIdAndUpdate(req.params.id, req.body)
-            .then(function (customer) {
-                res.json("Customers  updated");
-            })
-            .catch(function (err) {
-                res.status(422).send("Customers update failed.");
-            });
-    } else {
-        Customer.findById(req.params.id, async function (err, customer) {
-            if (customer) {
-                customer.name = req.body.name;
-                customer.photo = req.body.photo;
-                customer.email = req.body.email;
-                customer.phone = req.body.phone;
-                customer.address = req.body.address;
-                customer.rateType = req.body.rateType;
-                customer.localRate = req.body.localRate;
-                customer.countryRate = req.body.countryRate;
-                customer.loadRate = req.body.loadRate;
-                await customer
-                    .save()
-                    .then((customer) => {
-                        res.send(customer);
-                    })
-                    .catch(function (err) {
-                        res.status(422).send("customer update failed");
-                    });
+    const url = req.protocol + '://' + req.get('host');
 
-            } else {
-                res.status(404).send("Customer not found");
-            }
+
+    reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
+    req.body.photo = reqAvatar;
+
+    await Customer.findByIdAndUpdate(req.params.id, req.body)
+        .then(function (customer) {
+            res.json("Customers  updated");
         })
-    }
+        .catch(function (err) {
+            res.status(422).send("Customers update failed.");
+        });
+
 };
 
 // Delete driver Detail by Id

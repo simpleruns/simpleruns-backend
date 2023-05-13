@@ -15,16 +15,16 @@ const driver_index = (req, res) => {
         if (req.query.status) {
             drivers = drivers.filter(item => (item.approved == (req.query.status == "approved" ? true : false)));
         }
-        // if (req.query.page) {
-        //     var from, to;
-        //     from = parseInt(req.query.page) * 10;
-        //     to = parseInt(req.query.page + 1) * 10 - 1;
-        //     drivers.slice(from, to);
-        // }
+        totalCount = drivers.length;
+        if (req.query.page) {
+            var from, to;
+            from = (parseInt(req.query.page) - 1) * 10;
+            to = parseInt(req.query.page) * 10 - 1;
+            drivers.slice(from, to);
+        }
 
-        // totalCount = drivers.length;
-        // res.json({ drivers, totalCount });
-        res.json(drivers);
+        res.json({ drivers, totalCount });
+        // res.json(drivers);
     });
 };
 
@@ -116,6 +116,8 @@ const driver_update = async (req, res) => {
                 driver.numberPlate = req.body.numberPlate;
                 driver.VIN = req.body.VIN;
                 driver.approved = req.body.approved;
+                driver.make = req.body.make;
+                driver.model = req.body.model;
                 await driver
                     .save()
                     .then((driver) => {

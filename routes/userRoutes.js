@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
+const settingController = require("../controllers/setting.controller");
 
 router.get("/", userController.user_index);
 router.post("/", userController.user_create);
@@ -10,5 +11,7 @@ router.put('/update_password', userController.update_password);
 router.post("/login", userController.user_login);
 router.patch("/:id", userController.user_update);
 router.delete("/:id", userController.user_delete);
+
+router.post("/logo/setting", settingController.logo_updete);
 
 module.exports = router;

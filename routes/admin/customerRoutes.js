@@ -27,9 +27,9 @@ var upload = multer({
     }
 });
 
-router.get("/", upload.single('avatar'), customerController.customer_index);
-router.post("/create", customerController.customer_create);
-router.put('/:id', upload.single('avatar'), customerController.customer_update);
+router.get("/", customerController.customer_index);
+router.post("/create", upload.single('photo'), customerController.customer_create);
+router.put('/:id', upload.single('photo'), customerController.customer_update);
 
 
 router.get("/:id", customerController.customer_getOne);

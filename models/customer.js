@@ -3,9 +3,12 @@ const Schema = mongoose.Schema;
 
 const CustomerSchema = new mongoose.Schema({
     photo: {
-        type: String,
+        type: Object,
     },
-    name: {
+    firstname: {
+        type: String
+    },
+    lastname: {
         type: String
     },
     email: {
@@ -31,6 +34,9 @@ const CustomerSchema = new mongoose.Schema({
     },
     fuelRate: {
         type: Number
+    },
+    approved: {
+        type: Boolean
     }
 
 });

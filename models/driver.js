@@ -67,6 +67,12 @@ const DriverSchema = new mongoose.Schema({
     },
     approved: {
         type: Boolean
+    },
+    make: {
+        type: String,
+    },
+    model: {
+        type: String
     }
 });
 let Driver = mongoose.model('Driver', DriverSchema);
