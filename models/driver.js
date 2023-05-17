@@ -65,13 +65,16 @@ const DriverSchema = new mongoose.Schema({
     VIN: {
         type: String
     },
+    make: {
+        type: String
+    },
+    model: {
+        type: String
+    },
     approved: {
         type: Boolean
     },
-    make: {
-        type: String,
-    },
-    model: {
+    userId: {
         type: String
     }
 });

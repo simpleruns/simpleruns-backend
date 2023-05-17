@@ -4,8 +4,10 @@ const cors = require("cors");
 const connection = require("./db");
 const userRoutes = require("./routes/userRoutes");
 const adminDriverRoutes = require("./routes/admin/driverRoutes");
-const adminCustomerRoutes = require("./routes/admin/customerRoutes")
+const adminCustomerRoutes = require("./routes/admin/customerRoutes");
+const settingRoutes = require("./routes/settingRoutes");
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -16,6 +18,9 @@ connection();
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 app.use('/api/public', express.static('public'));
 
 // routes
@@ -26,8 +31,11 @@ app.use("/api/admin/drivers", adminDriverRoutes);
 
 app.use("/api/admin/customers", adminCustomerRoutes);
 
-app.get('/api', (req, res) => {
-    res.send('Hello World!');
+//setting
+app.use("/api/settings", settingRoutes);
+
+app.get('/api/settings/positions', (req, res) => {
+    res.send(req.body);
 })
 
 

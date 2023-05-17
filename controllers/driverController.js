@@ -6,7 +6,6 @@ const hashPassword = require("../utils/common.utils");
 const DIR = './api/public/';
 // Display All driver Data
 const driver_index = (req, res) => {
-
     Driver.find(function (err, drivers) {
         var totalCount;
         if (req.query.search) {
@@ -15,6 +14,10 @@ const driver_index = (req, res) => {
         if (req.query.status) {
             drivers = drivers.filter(item => (item.approved == (req.query.status == "approved" ? true : false)));
         }
+        if (req.query.user) {
+            drivers = drivers.filter(item => (item.userId === req.query.user));
+        }
+
         totalCount = drivers.length;
         if (req.query.page) {
             var from, to;
@@ -66,7 +69,6 @@ const driver_getOne = async (req, res) => {
     });
 }
 
-
 const driver_update = async (req, res) => {
     const reqLicensePhotos = [];
     const url = req.protocol + '://' + req.get('host');
@@ -115,9 +117,9 @@ const driver_update = async (req, res) => {
                 driver.year = req.body.year;
                 driver.numberPlate = req.body.numberPlate;
                 driver.VIN = req.body.VIN;
-                driver.approved = req.body.approved;
                 driver.make = req.body.make;
                 driver.model = req.body.model;
+                driver.approved = req.body.approved;
                 await driver
                     .save()
                     .then((driver) => {

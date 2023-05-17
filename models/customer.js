@@ -37,6 +37,9 @@ const CustomerSchema = new mongoose.Schema({
     },
     approved: {
         type: Boolean
+    },
+    userId: {
+        type: String
     }
 
 });

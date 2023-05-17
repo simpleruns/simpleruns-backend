@@ -6,15 +6,16 @@ const hashPassword = require("../utils/common.utils");
 const DIR = './public/';
 // Display All driver Data
 const customer_index = (req, res) => {
-
-    Customer.find(function (err, customers
-    ) {
+    Customer.find(function (err, customers) {
         var totalCount;
         if (req.query.search) {
-            customers = customers.filter(item => (item.firstname + item.lastname + item.email + item.address).includes(req.query.search));
+            customers = customers.filter(item => (item.name + item.email + item.address).includes(req.query.search));
         }
         if (req.query.status) {
-            customers = customers.filter(item => (item.approved == ((req.query.status == "approved") ? true : false)));
+            customers = customers.filter(item => (item.approved == (req.query.status == "approved" ? true : false)));
+        }
+        if (req.query.user) {
+            customers = customers.filter(item => (item.userId === req.query.user));
         }
         totalCount = customers.length;
         if (req.query.page) {
@@ -22,7 +23,6 @@ const customer_index = (req, res) => {
             from = parseInt(req.query.page) * 10;
             to = parseInt(req.query.page + 1) * 10 - 1;
             customers.slice(from, to);
-
         }
 
         res.json({ customers, totalCount });
