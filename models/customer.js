@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
 const CustomerSchema = new mongoose.Schema({
     photo: {
         type: Object,
     },
-    firstname: {
-        type: String
-    },
-    lastname: {
+    companyName: {
         type: String
     },
     email: {
@@ -37,6 +35,9 @@ const CustomerSchema = new mongoose.Schema({
     },
     approved: {
         type: Boolean
+    },
+    abn: {
+        type: String
     },
     userId: {
         type: String

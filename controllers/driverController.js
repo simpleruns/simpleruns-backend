@@ -33,6 +33,7 @@ const driver_index = (req, res) => {
 
 // Create New driver
 const driver_create = async (req, res) => {
+    console.log(req.body);
     const reqLicensePhotos = [];
     const url = req.protocol + '://' + req.get('host');
 

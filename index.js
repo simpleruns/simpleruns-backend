@@ -4,8 +4,11 @@ const cors = require("cors");
 const connection = require("./db");
 const userRoutes = require("./routes/userRoutes");
 const adminDriverRoutes = require("./routes/admin/driverRoutes");
+const mobileDriverRoutes = require("./routes/mobile/driverRoutes");
 const adminCustomerRoutes = require("./routes/admin/customerRoutes");
+const deliveryRoutes = require("./routes/deliveryRoutes");
 const settingRoutes = require("./routes/settingRoutes");
+const invoiceRoutes = require("./routes/invoiceRoutes");
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser');
 
@@ -31,13 +34,24 @@ app.use("/api/admin/drivers", adminDriverRoutes);
 
 app.use("/api/admin/customers", adminCustomerRoutes);
 
+//deliveries
+
+app.use("/api/deliveries", deliveryRoutes);
+
+//invoices
+
+app.use("/api/invoices", invoiceRoutes);
+
 //setting
+
 app.use("/api/settings", settingRoutes);
 
 app.get('/api/settings/positions', (req, res) => {
     res.send(req.body);
 })
 
+//mobile
+app.use("/api/mobile/drivers", mobileDriverRoutes);
 
 // listening on port
 app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));
