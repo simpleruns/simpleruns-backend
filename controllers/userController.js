@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const hashPassword = require("../utils/common.utils");
 const nodemailer = require('nodemailer');
 
-
 // Display All CRUD Data
 const user_index = (req, res) => {
 	User.find(function (err, users) {
@@ -56,7 +55,6 @@ const user_login = (req, res) => {
 							maxAge: 1000 * 60 * 60 * 24, // would expire after 24 hours
 							httpOnly: false, // The cookie only accessible by the web server
 						}
-
 
 						res.cookie('token', token, options);
 						res.send({ type: "success", message: "successful", token, id: user._id });
@@ -133,9 +131,8 @@ const transporter = nodemailer.createTransport({
 	}
 });
 
-
 const sendResetPasswordEmail = (email, token) => {
-	const resetPasswordLink = `http://170.64.154.214/frontend/auth/${token}`;
+	const resetPasswordLink = `http://170.64.154.214/auth/reset/${token}`;
 	const mailOptions = {
 		from: 'smartluckyman1107@gmail.com',
 		to: email,
@@ -156,7 +153,7 @@ const verify_email = (req, res) => {
 	const token = req.body.token;
 	try {
 		payload = jwt.verify(token, 'secret');
-		return res.status(200).end();
+		return res.send(payload.email);
 	} catch (e) {
 		if (e instanceof jwt.JsonWebTokenError) {
 			// if the error thrown is because the JWT is unauthorized, return a 401 error
@@ -186,8 +183,6 @@ const update_password = (req, res) => {
 		}
 	})
 }
-
-
 
 module.exports = {
 	user_index,

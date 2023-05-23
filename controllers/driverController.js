@@ -15,7 +15,7 @@ const driver_index = (req, res) => {
             drivers = drivers.filter(item => (item.approved == (req.query.status == "approved" ? true : false)));
         }
         if (req.query.user) {
-            drivers = drivers.filter(item => (item.userId === req.query.user));
+            drivers = drivers.filter(item => (item.userId == req.query.user));
         }
 
         totalCount = drivers.length;
@@ -33,10 +33,8 @@ const driver_index = (req, res) => {
 
 // Create New driver
 const driver_create = async (req, res) => {
-    console.log(req.body);
     const reqLicensePhotos = [];
     const url = req.protocol + '://' + req.get('host');
-
 
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
         reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
@@ -74,22 +72,18 @@ const driver_update = async (req, res) => {
     const reqLicensePhotos = [];
     const url = req.protocol + '://' + req.get('host');
 
-
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
         reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
     }
     reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
 
-    console.log(reqLicensePhotos, reqAvatar);
     req.body.licensePhoto = reqLicensePhotos;
     req.body.avatar = reqAvatar;
 
     if (req.body.resetPassword) {
-        // console.log("reset");
         await hashPassword(req);
         await Driver.findByIdAndUpdate(req.params.id, req.body)
             .then(function (driver) {
-
                 res.json(driver);
             })
             .catch(function (err) {

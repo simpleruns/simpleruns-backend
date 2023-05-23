@@ -15,14 +15,28 @@ const UserSchema = new mongoose.Schema({
 		type: String
 	},
 	password: {
-		type: String,
+		type: String
 	},
 	logo: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Logo"
+		type: Object
 	},
-	logoTitle: {
-		type: String,
+	bank: {
+		type: String
+	},
+	address: {
+		type: String
+	},
+	bsb: {
+		type: String
+	},
+	accountNo: {
+		type: String
+	},
+	company: {
+		type: String
+	},
+	api: {
+		type: String
 	}
 });
 let User = mongoose.model('User', UserSchema);

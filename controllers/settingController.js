@@ -1,10 +1,11 @@
 const Position = require("../models/position");
 const Tolls = require("../models/tolls");
+const User = require("../models/user");
 
 const position_index = (req, res) => {
     Position.find(function (err, positions) {
         if (req.query.user) {
-            positions = positions.filter(item => (item.userId === req.query.user));
+            positions = positions.filter(item => (item.userId == req.query.user));
         }
         var totalCount = positions.length;
         res.json({ positions, totalCount });
@@ -80,27 +81,28 @@ const position_delete = async (req, res) => {
     var totalCount = 0;
     var initialTolls;
     var tmpTolls;
-    const userId = req.query.userId;
-
+    const itemID = req.params.id;
+    const userID = req.query.userId;
+    console.log(itemID)
     Position.find(function (err, positions) {
-        if (userId) {
-            positions = positions.filter(item => (item.userId === userId));
+        if (itemID) {
+            positions = positions.filter(item => (item._id == itemID));
         }
         totalCount = positions.length;
     });
 
     Tolls.find(function (err, tolls) {
-        if (userId) {
-            tolls = tolls.filter(item => (item.userId === userId));
+        if (itemID) {
+            tolls = tolls.filter(item => (item._id == itemID));
         }
         initialTolls = tolls;
     });
 
-    Position.findById(req.params.id, function (err, position) {
+    Position.findById(itemID, function (err, position) {
         if (!position) {
             res.status(404).send("Position not found");
         } else {
-            Position.findByIdAndRemove(req.params.id)
+            Position.findByIdAndRemove(itemID)
                 .then(function () {
                     totalCount -= 1;
                     tmpTolls = Array.from({ length: totalCount }, () =>
@@ -124,13 +126,15 @@ const position_delete = async (req, res) => {
         }
     });
 
-    await Tolls.deleteOne({ userId: userId }).then(function () {
+    await Tolls.deleteOne({ userId: userID }).then(function () {
         console.log('deleted');
     });
+
     let tollsTable = await new Tolls({
         tmpTolls,
-        userId
+        userID
     });
+
     await tollsTable
         .save()
         .then(() => {
@@ -169,10 +173,56 @@ const tolls_update = async (req, res) => {
         });
 }
 
+const user_index = async (req, res) => {
+    User.findOne({ _id: req.params.id }, function (err, user) {
+        if (!user) {
+            res.status(404).send("This User doesn't exist!");
+        } else {
+            res.send(user);
+        }
+    });
+}
+
+const user_update = async (req, res) => {
+    const url = req.protocol + '://' + req.get('host');
+
+    const reqLogo = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
+
+    data = {};
+    console.log(req.body)
+
+    User.findOne({ _id: req.params.id }, async function (err, user) {
+        if (user) {
+            user.bank = req.body.bank;
+            user.address = req.body.address;
+            user.bsb = req.body.bsb;
+            user.accountNo = req.body.accountNo;
+            user.company = req.body.company;
+            user.api = req.body.api;
+            user.logo = reqLogo;
+            console.log(user)
+
+            await user
+                .save()
+                .then((user) => {
+                    res.send(user);
+                })
+                .catch(function (err) {
+                    res.status(422).send("User update failed");
+                });
+
+        } else {
+            res.status(404).send("User not found");
+        }
+    })
+}
+
 module.exports = {
     position_index,
     position_create,
     position_delete,
     tolls_index,
-    tolls_update
+    tolls_update,
+    user_index,
+    user_update,
 }

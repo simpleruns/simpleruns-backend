@@ -15,7 +15,7 @@ const customer_index = (req, res) => {
             customers = customers.filter(item => (item.approved == (req.query.status == "approved" ? true : false)));
         }
         if (req.query.user) {
-            customers = customers.filter(item => (item.userId === req.query.user));
+            customers = customers.filter(item => (item.userId == req.query.user));
         }
         totalCount = customers.length;
         if (req.query.page) {
@@ -63,9 +63,7 @@ const customer_getOne = async (req, res) => {
 
 
 const customer_update = async (req, res) => {
-
     const url = req.protocol + '://' + req.get('host');
-
 
     reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
     req.body.photo = reqAvatar;
@@ -111,7 +109,6 @@ const customer_approve = (req, res) => {
                 .catch(function (err) {
                     res.status(422).send("customer approve change failed");
                 });
-
         }
     })
 }
