@@ -34,7 +34,6 @@ const invoice_single = (req, res) => {
             data.customerName = customer.companyName;
             data.customerAddress = customer.address;
             data.customerPhone = customer.phone;
-            data.abn = customer.abn;
             data.invoiceNumber = '5024';
             const milliseconds = parseInt(req.query.end);
             const date = new Date(milliseconds);
@@ -46,6 +45,7 @@ const invoice_single = (req, res) => {
 
             User.findOne({ _id: req.query.user }, async function (err, user) {
                 if (user) {
+                    data.abn = user.abn;
                     data.adminAddress = user.address;
                     data.adminPhone = user.phone;
                     data.adminEmail = user.email;

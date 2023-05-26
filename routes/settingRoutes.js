@@ -34,5 +34,5 @@ router.get("/tolls", settingController.tolls_index);
 router.post("/tolls/update", settingController.tolls_update);
 router.get("/user/:id", settingController.user_index);
 router.put("/user/:id", upload.single('logo'), settingController.user_update);
-
-module.exports = router;
+router.get("/googleapi/:id", settingController.google_map),
+    module.exports = router;

@@ -200,6 +200,7 @@ const user_update = async (req, res) => {
             user.company = req.body.company;
             user.api = req.body.api;
             user.logo = reqLogo;
+            user.abn = req.body.abn;
             console.log(user)
 
             await user
@@ -217,6 +218,17 @@ const user_update = async (req, res) => {
     })
 }
 
+const google_map = async (req, res) => {
+    console.log(req.params.id)
+    User.findOne({ _id: req.params.id }, async function (err, user) {
+        if (user) {
+            res.send(user.api);
+        } else {
+            res.status(404).send("User not found");
+        }
+    })
+}
+
 module.exports = {
     position_index,
     position_create,
@@ -225,4 +237,5 @@ module.exports = {
     tolls_update,
     user_index,
     user_update,
+    google_map
 }

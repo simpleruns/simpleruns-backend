@@ -35,6 +35,9 @@ const UserSchema = new mongoose.Schema({
 	company: {
 		type: String
 	},
+	abn: {
+		type: String
+	},
 	api: {
 		type: String
 	}
