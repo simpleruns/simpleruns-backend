@@ -1,4 +1,5 @@
 const Delivery = require("../models/delivery");
+const Customer = require("../models/customer");
 const deliveries = require('../utils/deliveries.json');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -13,11 +14,32 @@ const delivery_index = (req, res) => {
 };
 
 const delivery_create = async (req, res) => {
-    await deliveries.forEach(async (item) => {
-        let delivery = await new Delivery(item);
-        await delivery
-            .save();
-    })
+    console.log(req.body);
+    await Customer.findById(req.body.customer, async function (err, customer) {
+        if (customer) {
+            console.log(customer);
+            req.body.hourlyRate = customer.localRate;
+            req.body.fuelLevy = customer.localRate * req.body.totalHour * customer.fuelRate / 100;
+            req.body.subTotal = customer.localRate * req.body.totalHour + req.body.fuelLevy + req.body.tolls;
+            req.body.GST = req.body.subTotal * 0.1;
+
+            let delivery = await new Delivery(req.body);
+            delivery
+                .save()
+                .then((delivery) => {
+                    console.log(delivery);
+                    res.send(delivery);
+                })
+                .catch(function (err) {
+                    console.log(err);
+                    res.status(422).send("delivery add failed");
+                });
+        } else {
+            console.log('sdfsdf');
+            res.status(401).send("Customer doesn't exist");
+        }
+    }).clone();
+
 }
 
 const delivery_getByCustomer = async (req, res) => {

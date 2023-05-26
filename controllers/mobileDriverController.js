@@ -2,6 +2,7 @@ const Driver = require("../models/driver");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const hashPassword = require("../utils/common.utils");
+const User = require("../models/user");
 
 // Create New driver
 const driver_create = async (req, res) => {
@@ -66,9 +67,18 @@ const driver_login = (req, res) => {
                                 httpOnly: false, // The cookie only accessible by the web server
                             }
 
+                            console.log(req.body.user);
+                            User.findOne({ email: req.body.user }, function (err, user) {
+                                if (user) {
+                                    res.cookie('token', token, options);
+                                    res.send({ type: "success", message: "successful", token, id: driver._id, userId: user._id });
+                                } else {
+                                    res.send('Company is not existed!');
+                                }
+                            })
 
-                            res.cookie('token', token, options);
-                            res.send({ type: "success", message: "successful", token, id: driver._id });
+
+
                         }
                     );
                 } else {
