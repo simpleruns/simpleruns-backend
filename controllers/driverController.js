@@ -1,4 +1,5 @@
 const Driver = require("../models/driver");
+const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const hashPassword = require("../utils/common.utils");
@@ -46,6 +47,7 @@ const driver_create = async (req, res) => {
         console.log('deleted');
     });
     await hashPassword(req);
+
     let driver = await new Driver(req.body);
     await driver
         .save()

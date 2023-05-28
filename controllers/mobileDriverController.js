@@ -1,8 +1,8 @@
 const Driver = require("../models/driver");
+const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const hashPassword = require("../utils/common.utils");
-const User = require("../models/user");
 
 // Create New driver
 const driver_create = async (req, res) => {
@@ -26,16 +26,26 @@ const driver_create = async (req, res) => {
         console.log('deleted');
     });
     await hashPassword(req);
-    let driver = await new Driver(req.body);
-    await driver
-        .save()
-        .then((driver) => {
-            res.send(driver);
-        })
-        .catch(function (err) {
-            console.log(err);
-            res.status(422).send("driver add failed");
-        });
+
+    User.findOne({ email: req.body.userId }, async function (err, user) {
+        if (user) {
+            console.log(user._id);
+            req.body.userId = user._id;
+            let driver = await new Driver(req.body);
+            await driver
+                .save()
+                .then((driver) => {
+                    res.send(driver);
+                })
+                .catch(function (err) {
+                    console.log(err);
+                    res.status(422).send("driver add failed");
+                });
+
+        } else {
+            res.status(422).send("Company doesn't exist!");
+        }
+    })
 };
 
 
