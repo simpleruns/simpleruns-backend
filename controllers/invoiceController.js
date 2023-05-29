@@ -66,7 +66,24 @@ const invoice_single = (req, res) => {
     });
 };
 
+const invoice_edit = (req, res) => {
+    req.body.params.data.map(item => {
+        Delivery.deleteOne({ _id: item._id }).then(function () {
+            console.log('deleted');
+        });
+
+        let delivery = new Delivery(item);
+
+        delivery
+            .save()
+            .catch(function (err) {
+                res.status(422).send("Delivery update failed");
+            });
+    });
+};
+
 module.exports = {
     invoice_index,
-    invoice_single
+    invoice_single,
+    invoice_edit,
 };

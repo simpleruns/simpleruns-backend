@@ -33,5 +33,6 @@ var upload = multer({
 
 router.get("/", invoiceController.invoice_index);
 router.get("/single/:id", invoiceController.invoice_single);
+router.post("/edit/:id", invoiceController.invoice_edit);
 
 module.exports = router;
