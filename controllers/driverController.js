@@ -35,13 +35,28 @@ const driver_index = (req, res) => {
 // Create New driver
 const driver_create = async (req, res) => {
     const reqLicensePhotos = [];
+    const reqInsuranceFile = [];
+    const reqWorkCompensationFile = [];
+    const reqTruckRegistrationFile = [];
     const url = req.protocol + '://' + req.get('host');
 
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
         reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
     }
+    for (var i = 0; i < req.files.insuranceFile.length; i++) {
+        reqInsuranceFile.push({ 'type': req.files.insuranceFile[i].mimetype, 'url': (url + '/api/public/' + req.files.insuranceFile[i].filename) })
+    }
+    for (var i = 0; i < req.files.workCompensationFile.length; i++) {
+        reqWorkCompensationFile.push({ 'type': req.files.workCompensationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.workCompensationFile[i].filename) })
+    }
+    for (var i = 0; i < req.files.truckRegistrationFile.length; i++) {
+        reqTruckRegistrationFile.push({ 'type': req.files.truckRegistrationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.truckRegistrationFile[i].filename) })
+    }
     reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
     req.body.licensePhoto = reqLicensePhotos;
+    req.body.insuranceFile = reqInsuranceFile;
+    req.body.workCompensationFile = reqWorkCompensationFile;
+    req.body.truckRegistrationFile = reqTruckRegistrationFile;
     req.body.avatar = reqAvatar;
     await Driver.deleteOne({ email: req.body.email }).then(function () {
         console.log('deleted');
@@ -72,14 +87,29 @@ const driver_getOne = async (req, res) => {
 
 const driver_update = async (req, res) => {
     const reqLicensePhotos = [];
+    const reqInsuranceFile = [];
+    const reqWorkCompensationFile = [];
+    const reqTruckRegistrationFile = [];
     const url = req.protocol + '://' + req.get('host');
 
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
         reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
     }
+    for (var i = 0; i < req.files.insuranceFile.length; i++) {
+        reqInsuranceFile.push({ 'type': req.files.insuranceFile[i].mimetype, 'url': (url + '/api/public/' + req.files.insuranceFile[i].filename) })
+    }
+    for (var i = 0; i < req.files.workCompensationFile.length; i++) {
+        reqWorkCompensationFile.push({ 'type': req.files.workCompensationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.workCompensationFile[i].filename) })
+    }
+    for (var i = 0; i < req.files.truckRegistrationFile.length; i++) {
+        reqTruckRegistrationFile.push({ 'type': req.files.truckRegistrationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.truckRegistrationFile[i].filename) })
+    }
     reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
 
     req.body.licensePhoto = reqLicensePhotos;
+    req.body.insuranceFile = reqInsuranceFile;
+    req.body.workCompensationFile = reqWorkCompensationFile;
+    req.body.truckRegistrationFile = reqTruckRegistrationFile;
     req.body.avatar = reqAvatar;
 
     if (req.body.resetPassword) {
@@ -102,18 +132,18 @@ const driver_update = async (req, res) => {
                 driver.licenseNumber = req.body.licenseNumber;
                 driver.cardNumber = req.body.cardNumber;
                 driver.expireDate = req.body.expireDate;
-                driver.publishedDate = req.body.publishedDate;
                 driver.licenseCalss = req.body.licenseCalss;
                 driver.licenseState = req.body.licenseState;
                 driver.licensePhoto = req.body.licensePhoto;
-                driver.insurances = req.body.insurances;
-                driver.workCompensation = req.body.workCompensation;
-                driver.truckRegistration = req.body.truckRegistration;
+                driver.insuranceFile = req.body.insuranceFile;
+                driver.workCompensationFile = req.body.workCompensationFile;
+                driver.truckRegistrationFile = req.body.truckRegistrationFile;
                 driver.email = req.body.email;
                 driver.phone = req.body.phone;
                 driver.year = req.body.year;
                 driver.numberPlate = req.body.numberPlate;
                 driver.VIN = req.body.VIN;
+                driver.category = req.body.category;
                 driver.make = req.body.make;
                 driver.model = req.body.model;
                 driver.approved = req.body.approved;

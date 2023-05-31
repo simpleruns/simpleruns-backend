@@ -35,9 +35,6 @@ const DriverSchema = new mongoose.Schema({
     cardNumber: {
         type: String,
     },
-    publishedDate: {
-        type: Date
-    },
     licenseClass: {
         type: String
     },
@@ -47,14 +44,14 @@ const DriverSchema = new mongoose.Schema({
     licensePhoto: {
         type: Array
     },
-    insurances: {
-        type: String
+    insuranceFile: {
+        type: Array
     },
-    workCompensation: {
-        type: String
+    workCompensationFile: {
+        type: Array
     },
-    truckRegistration: {
-        type: String
+    truckRegistrationFile: {
+        type: Array
     },
     year: {
         type: Number
@@ -63,6 +60,9 @@ const DriverSchema = new mongoose.Schema({
         type: String
     },
     VIN: {
+        type: String
+    },
+    category: {
         type: String
     },
     make: {
