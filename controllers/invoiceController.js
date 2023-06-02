@@ -76,6 +76,7 @@ const invoice_edit = (req, res) => {
 
         delivery
             .save()
+            .then(function (delivery) { res.send(delivery); })
             .catch(function (err) {
                 res.status(422).send("Delivery update failed");
             });
