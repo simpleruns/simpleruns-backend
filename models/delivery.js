@@ -43,6 +43,19 @@ const DeliverySchema = new mongoose.Schema({
     },
     GST: {
         type: Number
+    },
+
+    load: {
+        type: String
+    },
+    job: {
+        type: String
+    },
+    docket: {
+        type: String
+    },
+    PO: {
+        type: String
     }
 
 });
