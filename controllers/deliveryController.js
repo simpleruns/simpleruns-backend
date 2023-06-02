@@ -14,14 +14,13 @@ const delivery_index = (req, res) => {
 };
 
 const delivery_create = async (req, res) => {
-    console.log(req.body);
     await Customer.findById(req.body.customer, async function (err, customer) {
         if (customer) {
-            console.log(customer);
             req.body.hourlyRate = customer.localRate;
             req.body.fuelLevy = customer.localRate * req.body.totalHour * customer.fuelRate / 100;
             req.body.subTotal = customer.localRate * req.body.totalHour + req.body.fuelLevy + req.body.tolls;
             req.body.GST = req.body.subTotal * 0.1;
+            req.body.ref = 'DD' + req.body.docket.match(/\d+/)[0];
 
             let delivery = await new Delivery(req.body);
             delivery
