@@ -43,20 +43,22 @@ const driver_create = async (req, res) => {
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
         reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
     }
-    for (var i = 0; i < req.files.insuranceFile.length; i++) {
-        reqInsuranceFile.push({ 'type': req.files.insuranceFile[i].mimetype, 'url': (url + '/api/public/' + req.files.insuranceFile[i].filename) })
-    }
-    for (var i = 0; i < req.files.workCompensationFile.length; i++) {
-        reqWorkCompensationFile.push({ 'type': req.files.workCompensationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.workCompensationFile[i].filename) })
-    }
-    for (var i = 0; i < req.files.truckRegistrationFile.length; i++) {
-        reqTruckRegistrationFile.push({ 'type': req.files.truckRegistrationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.truckRegistrationFile[i].filename) })
+    if (req.body.role == 'subcontractor') {
+        for (var i = 0; i < req.files.insuranceFile.length; i++) {
+            reqInsuranceFile.push({ 'type': req.files.insuranceFile[i].mimetype, 'url': (url + '/api/public/' + req.files.insuranceFile[i].filename) })
+        }
+        for (var i = 0; i < req.files.workCompensationFile.length; i++) {
+            reqWorkCompensationFile.push({ 'type': req.files.workCompensationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.workCompensationFile[i].filename) })
+        }
+        for (var i = 0; i < req.files.truckRegistrationFile.length; i++) {
+            reqTruckRegistrationFile.push({ 'type': req.files.truckRegistrationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.truckRegistrationFile[i].filename) })
+        }
+        req.body.insuranceFile = reqInsuranceFile;
+        req.body.workCompensationFile = reqWorkCompensationFile;
+        req.body.truckRegistrationFile = reqTruckRegistrationFile;
     }
     reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
     req.body.licensePhoto = reqLicensePhotos;
-    req.body.insuranceFile = reqInsuranceFile;
-    req.body.workCompensationFile = reqWorkCompensationFile;
-    req.body.truckRegistrationFile = reqTruckRegistrationFile;
     req.body.avatar = reqAvatar;
     await Driver.deleteOne({ email: req.body.email }).then(function () {
         console.log('deleted');
@@ -92,24 +94,25 @@ const driver_update = async (req, res) => {
     const reqTruckRegistrationFile = [];
     const url = req.protocol + '://' + req.get('host');
 
+    if (req.body.role == 'subcontractor') {
+        for (var i = 0; i < req.files.insuranceFile.length; i++) {
+            reqInsuranceFile.push({ 'type': req.files.insuranceFile[i].mimetype, 'url': (url + '/api/public/' + req.files.insuranceFile[i].filename) })
+        }
+        for (var i = 0; i < req.files.workCompensationFile.length; i++) {
+            reqWorkCompensationFile.push({ 'type': req.files.workCompensationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.workCompensationFile[i].filename) })
+        }
+        for (var i = 0; i < req.files.truckRegistrationFile.length; i++) {
+            reqTruckRegistrationFile.push({ 'type': req.files.truckRegistrationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.truckRegistrationFile[i].filename) })
+        }
+        req.body.insuranceFile = reqInsuranceFile;
+        req.body.workCompensationFile = reqWorkCompensationFile;
+        req.body.truckRegistrationFile = reqTruckRegistrationFile;
+    }
     for (var i = 0; i < req.files.licensePhoto.length; i++) {
         reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
     }
-    for (var i = 0; i < req.files.insuranceFile.length; i++) {
-        reqInsuranceFile.push({ 'type': req.files.insuranceFile[i].mimetype, 'url': (url + '/api/public/' + req.files.insuranceFile[i].filename) })
-    }
-    for (var i = 0; i < req.files.workCompensationFile.length; i++) {
-        reqWorkCompensationFile.push({ 'type': req.files.workCompensationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.workCompensationFile[i].filename) })
-    }
-    for (var i = 0; i < req.files.truckRegistrationFile.length; i++) {
-        reqTruckRegistrationFile.push({ 'type': req.files.truckRegistrationFile[i].mimetype, 'url': (url + '/api/public/' + req.files.truckRegistrationFile[i].filename) })
-    }
     reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
-
     req.body.licensePhoto = reqLicensePhotos;
-    req.body.insuranceFile = reqInsuranceFile;
-    req.body.workCompensationFile = reqWorkCompensationFile;
-    req.body.truckRegistrationFile = reqTruckRegistrationFile;
     req.body.avatar = reqAvatar;
 
     if (req.body.resetPassword) {
