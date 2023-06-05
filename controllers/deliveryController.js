@@ -20,7 +20,9 @@ const delivery_create = async (req, res) => {
             req.body.fuelLevy = customer.localRate * req.body.totalHour * customer.fuelRate / 100;
             req.body.subTotal = customer.localRate * req.body.totalHour + req.body.fuelLevy + req.body.tolls;
             req.body.GST = req.body.subTotal * 0.1;
-            req.body.ref = 'DD' + req.body.docket.match(/\d+/)[0];
+            if (req.body.status == "completed") {
+                req.body.ref = 'DD' + req.body.docket.match(/\d+/)[0];
+            }
 
             let delivery = await new Delivery(req.body);
             delivery

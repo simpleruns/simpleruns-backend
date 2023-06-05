@@ -29,7 +29,7 @@ const customer_index = (req, res) => {
     });
 };
 
-// Create New driver
+// Create New Customer
 const customer_create = async (req, res) => {
     const url = req.protocol + '://' + req.get('host');
 

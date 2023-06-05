@@ -55,6 +55,12 @@ const DeliverySchema = new mongoose.Schema({
     },
     PO: {
         type: String
+    },
+    status: {
+        type: String
+    },
+    cancelledReason: {
+        type: String
     }
 });
 let Delivery = mongoose.model('Delivery', DeliverySchema);
