@@ -78,14 +78,11 @@ const driver_login = (req, res) => {
                             }
 
                             console.log(req.body.user);
-                            User.findOne({ email: req.body.user }, function (err, user) {
-                                if (user) {
-                                    res.cookie('token', token, options);
-                                    res.send({ type: "success", message: "successful", token, id: driver._id, userId: user._id });
-                                } else {
-                                    res.send('Company is not existed!');
-                                }
-                            })
+
+                            res.cookie('token', token, options);
+                            res.send({ type: "success", message: "successful", token, id: driver._id, userId: driver.userId });
+
+
 
 
 
