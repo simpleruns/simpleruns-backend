@@ -51,11 +51,13 @@ const driver_create = async (req, res) => {
 
 const driver_login = (req, res) => {
     console.log(req.body);
-    Driver.findOne({ email: req.body.email }, function (err, driver) {
+    Driver.findOne({ email: req.body.email }, async function (err, driver) {
         if (!driver) {
             res.status(404).send("This email doesn't exist!");
         } else {
-            const isMatch = bcrypt.compare(req.body.password, driver.password);
+            const isMatch = await bcrypt.compare(req.body.password, driver.password);
+            console.log(req.body.password, driver.password);
+            console.log(isMatch);
             if (driver.approved) {
                 if (isMatch) {
                     console.log('login');
@@ -77,7 +79,7 @@ const driver_login = (req, res) => {
                                 httpOnly: false, // The cookie only accessible by the web server
                             }
 
-                            console.log(req.body.user);
+
 
                             res.cookie('token', token, options);
                             res.send({ type: "success", message: "successful", token, id: driver._id, userId: driver.userId });

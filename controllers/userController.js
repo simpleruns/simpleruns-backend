@@ -32,11 +32,11 @@ const user_create = async (req, res) => {
 
 // Show a particular CRUD Detail by Id
 const user_login = (req, res) => {
-	User.findOne({ email: req.body.email }, function (err, user) {
+	User.findOne({ email: req.body.email }, async function (err, user) {
 		if (!user) {
 			res.status(404).send("This email doesn't exist!");
 		} else {
-			const isMatch = bcrypt.compare(req.body.password, user.password);
+			const isMatch = await bcrypt.compare(req.body.password, user.password);
 			if (isMatch) {
 				const payload = {
 					user: {
