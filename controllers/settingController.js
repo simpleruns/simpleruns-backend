@@ -218,6 +218,38 @@ const user_update = async (req, res) => {
     })
 }
 
+const user_update1 = async (req, res) => {
+    const url = req.protocol + '://' + req.get('host');
+
+    const reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
+
+    data = {};
+    console.log(req.body)
+
+    User.findOne({ _id: req.params.id }, async function (err, user) {
+        if (user) {
+            user.firstname = req.body.firstname;
+            user.lastname = req.body.lastname;
+            user.phone = req.body.phone;
+            user.email = req.body.email;
+            user.avatar = reqAvatar;
+            console.log(user)
+
+            await user
+                .save()
+                .then((user) => {
+                    res.send(user);
+                })
+                .catch(function (err) {
+                    res.status(422).send("User update failed");
+                });
+
+        } else {
+            res.status(404).send("User not found");
+        }
+    })
+}
+
 const google_map = async (req, res) => {
     console.log(req.params.id)
     User.findOne({ _id: req.params.id }, async function (err, user) {
@@ -237,5 +269,6 @@ module.exports = {
     tolls_update,
     user_index,
     user_update,
+    user_update1,
     google_map
 }

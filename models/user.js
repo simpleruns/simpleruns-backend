@@ -20,6 +20,9 @@ const UserSchema = new mongoose.Schema({
 	logo: {
 		type: Object
 	},
+	avatar: {
+		type: Object
+	},
 	bank: {
 		type: String
 	},
