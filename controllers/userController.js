@@ -36,7 +36,8 @@ const user_login = (req, res) => {
 		if (!user) {
 			res.status(404).send("This email doesn't exist!");
 		} else {
-			const isMatch = await bcrypt.compare(req.body.password, user.password);
+			const isMatch = bcrypt.compare(req.body.password, user.password);
+			console.log(isMatch);
 			if (isMatch) {
 				const payload = {
 					user: {

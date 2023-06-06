@@ -6,8 +6,8 @@ const hashPassword = require("../utils/common.utils");
 
 // Create New driver
 const driver_create = async (req, res) => {
-    req.body.birthDate = new Date(req.body.birthDate);
-    req.body.expireDate = new Date(req.body.expireDate);
+    req.body.birthDate = new Date(req.body.birthDate.split('/')[2], req.body.birthDate.split('/')[1], req.body.birthDate.split('/')[0]);
+    req.body.expireDate = new Date(req.body.expireDate.split('/')[2], req.body.expireDate.split('/')[1], req.body.expireDate.split('/')[0]);
     req.body.publishedDate = new Date(req.body.publishedDate);
     req.body.approved = false;
 
@@ -20,6 +20,15 @@ const driver_create = async (req, res) => {
         reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
     }
     reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
+    if (req.files.insurance) {
+
+        reqInsurance = [{ 'type': req.files.insurance[0].mimetype, 'url': (url + '/api/public/' + req.files.insurance[0].filename) }];
+        reqCompensation = [{ 'type': req.files.compensation[0].mimetype, 'url': (url + '/api/public/' + req.files.compensation[0].filename) }];
+        reqRegistration = [{ 'type': req.files.registration[0].mimetype, 'url': (url + '/api/public/' + req.files.registration[0].filename) }];
+
+    }
+
+
     req.body.licensePhoto = reqLicensePhotos;
     req.body.avatar = reqAvatar;
     await Driver.deleteOne({ email: req.body.email }).then(function () {

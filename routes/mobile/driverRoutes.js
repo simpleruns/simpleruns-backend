@@ -31,7 +31,7 @@ var upload = multer({
 })
 
 
-router.post("/create", upload.fields([{ name: 'avatar', maxCount: 1 }, { name: "licensePhoto", maxCount: 10 }]), mobileDriverController.driver_create);
+router.post("/create", upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'insurance', maxCount: 1 }, { name: 'compensation', maxCount: 1 }, { name: 'registration', maxCount: 1 }, { name: "licensePhoto", maxCount: 10 }]), mobileDriverController.driver_create);
 router.post('/login', mobileDriverController.driver_login);
 
 
