@@ -6,10 +6,10 @@ const hashPassword = require("../utils/common.utils");
 
 // Create New driver
 const driver_create = async (req, res) => {
-    req.body.birthDate = new Date(req.body.birthDate.split('/')[2], req.body.birthDate.split('/')[1], req.body.birthDate.split('/')[0]);
-    req.body.expireDate = new Date(req.body.expireDate.split('/')[2], req.body.expireDate.split('/')[1], req.body.expireDate.split('/')[0]);
-    req.body.publishedDate = new Date(req.body.publishedDate);
+    req.body.birthDate = new Date(req.body.birthDate.split('/')[2], (req.body.birthDate.split('/')[1] - 1), req.body.birthDate.split('/')[0]);
+    req.body.expireDate = new Date(req.body.expireDate.split('/')[2], (req.body.expireDate.split('/')[1] - 1), req.body.expireDate.split('/')[0]);
     req.body.approved = false;
+    console.log(req.files, req.body.expireDate, req.body.birthDate);
 
 
     const reqLicensePhotos = [];
@@ -31,12 +31,15 @@ const driver_create = async (req, res) => {
 
     req.body.licensePhoto = reqLicensePhotos;
     req.body.avatar = reqAvatar;
+    req.body.insuranceFile = reqInsurance;
+    req.body.workCompensationFile = reqCompensation;
+    req.body.truckRegistrationFile = reqRegistration;
     await Driver.deleteOne({ email: req.body.email }).then(function () {
         console.log('deleted');
     });
     await hashPassword(req);
 
-    User.findOne({ email: req.body.userId }, async function (err, user) {
+    User.findOne({ company: req.body.userId }, async function (err, user) {
         if (user) {
             console.log(user._id);
             req.body.userId = user._id;
