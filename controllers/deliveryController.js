@@ -17,7 +17,7 @@ const delivery_create = async (req, res) => {
     await Customer.findById(req.body.customer, async function (err, customer) {
         if (customer) {
             req.body.hourlyRate = customer.localRate;
-            req.body.fuelLevy = customer.localRate * req.body.totalHour * customer.fuelRate / 100;
+            req.body.fuelLevy = customer.localRate * req.body.totalHour * customer.fuelLevy / 100;
             req.body.subTotal = customer.localRate * req.body.totalHour + req.body.fuelLevy + req.body.tolls;
             req.body.GST = req.body.subTotal * 0.1;
             if (req.body.status == "completed") {

@@ -28,7 +28,7 @@ const CustomerSchema = new mongoose.Schema({
     loadRate: {
         type: Number
     },
-    fuelRate: {
+    fuelLevy: {
         type: Number
     },
     approved: {
