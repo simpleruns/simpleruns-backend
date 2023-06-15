@@ -57,7 +57,7 @@ const invoice_single = (req, res) => {
                     data.logo = user.logo;
 
                     Delivery.find({ customer: req.params.id, user: req.query.user }, function (err, deliveries) {
-                        data.deliveries = deliveries.filter(item => (item.startTime.valueOf() > parseInt(req.query.start) && item.endTime.valueOf() < parseInt(req.query.end)));
+                        data.deliveries = deliveries.filter(item => (item.startTime && item.startTime.valueOf() > parseInt(req.query.start) && item.endTime && item.endTime.valueOf() < parseInt(req.query.end)));
                         res.send(data);
                     });
                 }

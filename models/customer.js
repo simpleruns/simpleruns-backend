@@ -28,7 +28,7 @@ const CustomerSchema = new mongoose.Schema({
     loadRate: {
         type: Number
     },
-    fuelRate: {
+    fuelLevy: {
         type: Number
     },
     approved: {
@@ -42,7 +42,10 @@ const CustomerSchema = new mongoose.Schema({
     },
     abn: {
         type: String
-    }
+    },
+    job: {
+        type: String
+    },
 });
 
 let Customer = mongoose.model('Customer', CustomerSchema);
