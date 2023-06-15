@@ -25,15 +25,15 @@ const driver_create = async (req, res) => {
         reqInsurance = [{ 'type': req.files.insurance[0].mimetype, 'url': (url + '/api/public/' + req.files.insurance[0].filename) }];
         reqCompensation = [{ 'type': req.files.compensation[0].mimetype, 'url': (url + '/api/public/' + req.files.compensation[0].filename) }];
         reqRegistration = [{ 'type': req.files.registration[0].mimetype, 'url': (url + '/api/public/' + req.files.registration[0].filename) }];
+        req.body.insuranceFile = reqInsurance;
+        req.body.workCompensationFile = reqCompensation;
+        req.body.truckRegistrationFile = reqRegistration;
 
     }
 
 
     req.body.licensePhoto = reqLicensePhotos;
     req.body.avatar = reqAvatar;
-    req.body.insuranceFile = reqInsurance;
-    req.body.workCompensationFile = reqCompensation;
-    req.body.truckRegistrationFile = reqRegistration;
     await Driver.deleteOne({ email: req.body.email }).then(function () {
         console.log('deleted');
     });
@@ -69,46 +69,53 @@ const driver_login = (req, res) => {
         } else {
             const isMatch = await bcrypt.compare(req.body.password, driver.password);
             console.log(req.body.password, driver.password);
-            console.log(isMatch);
-            if (driver.approved) {
-                if (isMatch) {
-                    console.log('login');
-                    const payload = {
-                        driver: {
-                            id: driver._id
+            let company;
+            User.findById(driver.userId, function (err, user) {
+                if (user) {
+                    company = user;
+                    console.log(company);
+                    if (driver.approved) {
+                        if (isMatch) {
+                            console.log('login');
+                            const payload = {
+                                driver: {
+                                    id: driver._id
+                                }
+                            };
+
+                            jwt.sign(
+                                payload,
+                                'secret',
+                                (err, token) => {
+                                    if (err) throw err;
+                                    let options = {
+                                        path: "/",
+                                        sameSite: true,
+                                        maxAge: 1000 * 60 * 60 * 24, // would expire after 24 hours
+                                        httpOnly: false, // The cookie only accessible by the web server
+                                    }
+
+
+
+                                    res.cookie('token', token, options);
+                                    res.send({ type: "success", message: "successful", token, id: driver._id, userId: driver.userId, companyAddress: user.address, companyName: user.company });
+
+
+
+
+
+                                }
+                            );
+                        } else {
+                            res.status(401).send("The password is wrong!");
                         }
-                    };
 
-                    jwt.sign(
-                        payload,
-                        'secret',
-                        (err, token) => {
-                            if (err) throw err;
-                            let options = {
-                                path: "/",
-                                sameSite: true,
-                                maxAge: 1000 * 60 * 60 * 24, // would expire after 24 hours
-                                httpOnly: false, // The cookie only accessible by the web server
-                            }
-
-
-
-                            res.cookie('token', token, options);
-                            res.send({ type: "success", message: "successful", token, id: driver._id, userId: driver.userId });
-
-
-
-
-
-                        }
-                    );
-                } else {
-                    res.status(401).send("The password is wrong!");
+                    } else {
+                        res.status(401).send("Driver is not approved!");
+                    }
                 }
+            })
 
-            } else {
-                res.status(401).send("Driver is not approved!");
-            }
         }
     });
 };
