@@ -42,7 +42,10 @@ const CustomerSchema = new mongoose.Schema({
     },
     abn: {
         type: String
-    }
+    },
+    job: {
+        type: String
+    },
 });
 
 let Customer = mongoose.model('Customer', CustomerSchema);

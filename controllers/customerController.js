@@ -61,12 +61,12 @@ const customer_getOne = async (req, res) => {
     });
 }
 
-
 const customer_update = async (req, res) => {
     const url = req.protocol + '://' + req.get('host');
 
     reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
     req.body.photo = reqAvatar;
+    console.log(req.params.id, req.body)
 
     await Customer.findByIdAndUpdate(req.params.id, req.body)
         .then(function (customer) {
