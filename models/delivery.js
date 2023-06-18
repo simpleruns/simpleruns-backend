@@ -61,6 +61,15 @@ const DeliverySchema = new mongoose.Schema({
     },
     cancelledReason: {
         type: String
+    },
+    runsheet: {
+        type: String,
+    },
+    truckID: {
+        type: String
+    },
+    trailerID: {
+        type: String
     }
 });
 let Delivery = mongoose.model('Delivery', DeliverySchema);
