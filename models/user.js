@@ -43,7 +43,10 @@ const UserSchema = new mongoose.Schema({
 	},
 	api: {
 		type: String
-	}
+	},
+	website: {
+		type: String
+	},
 });
 let User = mongoose.model('User', UserSchema);
 

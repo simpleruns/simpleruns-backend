@@ -201,7 +201,7 @@ const user_update = async (req, res) => {
             user.api = req.body.api;
             user.logo = reqLogo;
             user.abn = req.body.abn;
-            console.log(user)
+            user.website = req.body.website;
 
             await user
                 .save()

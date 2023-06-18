@@ -14,6 +14,9 @@ const DeliverySchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: "Driver"
     },
+    driverName: {
+        type: String
+    },
     startTime: {
         type: Date
     },

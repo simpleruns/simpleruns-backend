@@ -1,5 +1,7 @@
 const Delivery = require("../models/delivery");
 const Customer = require("../models/customer");
+const Driver = require("../models/driver");
+
 const deliveries = require('../utils/deliveries.json');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -20,6 +22,15 @@ const delivery_create = async (req, res) => {
             req.body.fuelLevy = customer.localRate * req.body.totalHour * customer.fuelLevy / 100;
             req.body.subTotal = customer.localRate * req.body.totalHour + req.body.fuelLevy + req.body.tolls;
             req.body.GST = req.body.subTotal * 0.1;
+
+            await Driver.findById(req.body.driver, function (err, driver) {
+                if (!driver) {
+                    res.status(404).send("Driver not found");
+                } else {
+                    req.body.driverName = driver.firstname + ' ' + driver.lastname;
+                }
+            });
+
             if (req.body.status == "completed") {
                 req.body.ref = 'DD' + req.body.docket.match(/\d+/)[0];
             }
@@ -28,7 +39,6 @@ const delivery_create = async (req, res) => {
             delivery
                 .save()
                 .then((delivery) => {
-                    console.log(delivery);
                     res.send(delivery);
                 })
                 .catch(function (err) {
@@ -36,7 +46,6 @@ const delivery_create = async (req, res) => {
                     res.status(422).send("delivery add failed");
                 });
         } else {
-            console.log('sdfsdf');
             res.status(401).send("Customer doesn't exist");
         }
     }).clone();
