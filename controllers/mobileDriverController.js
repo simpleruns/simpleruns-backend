@@ -63,7 +63,7 @@ const driver_create = async (req, res) => {
 
 const driver_login = (req, res) => {
     console.log(req.body);
-    Driver.findOne({ email: req.body.email }, async function (err, driver) {
+    Driver.findOne({ email: new RegExp(req.body.email, 'i') }, async function (err, driver) {
         if (!driver) {
             res.status(404).send("This email doesn't exist!");
         } else {
