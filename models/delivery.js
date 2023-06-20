@@ -23,9 +23,6 @@ const DeliverySchema = new mongoose.Schema({
     endTime: {
         type: Date
     },
-    ref: {
-        type: String
-    },
     description: {
         type: String
     },
@@ -46,18 +43,6 @@ const DeliverySchema = new mongoose.Schema({
     },
     GST: {
         type: Number
-    },
-    load: {
-        type: Number
-    },
-    job: {
-        type: String
-    },
-    docket: {
-        type: String
-    },
-    PO: {
-        type: String
     },
     status: {
         type: String
