@@ -5,6 +5,7 @@ const connection = require("./db");
 const userRoutes = require("./routes/userRoutes");
 const adminDriverRoutes = require("./routes/admin/driverRoutes");
 const mobileDriverRoutes = require("./routes/mobile/driverRoutes");
+const mobileCustomerRoutes = require('./routes/mobile/customerRoute');
 const adminCustomerRoutes = require("./routes/admin/customerRoutes");
 const deliveryRoutes = require("./routes/deliveryRoutes");
 const settingRoutes = require("./routes/settingRoutes");
@@ -52,6 +53,7 @@ app.get('/api/settings/positions', (req, res) => {
 
 //mobile
 app.use("/api/mobile/drivers", mobileDriverRoutes);
+app.use("/api/mobile/customers", mobileCustomerRoutes);
 
 // listening on port
 app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));
