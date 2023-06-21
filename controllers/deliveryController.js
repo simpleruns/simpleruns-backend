@@ -32,10 +32,6 @@ const delivery_create = async (req, res) => {
                 }
             });
 
-            if (req.body.status == "completed") {
-                req.body.ref = 'DD' + req.body.docket.match(/\d+/)[0];
-            }
-
             let delivery = await new Delivery(req.body);
             delivery
                 .save()
