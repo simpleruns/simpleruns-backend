@@ -83,7 +83,6 @@ const position_delete = async (req, res) => {
     var tmpTolls;
     const itemID = req.params.id;
     const userID = req.query.userId;
-    console.log(itemID)
     Position.find(function (err, positions) {
         if (itemID) {
             positions = positions.filter(item => (item._id == itemID));
@@ -189,7 +188,6 @@ const user_update = async (req, res) => {
     const reqLogo = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
 
     data = {};
-    console.log(req.body)
 
     User.findOne({ _id: req.params.id }, async function (err, user) {
         if (user) {
@@ -224,7 +222,6 @@ const user_update1 = async (req, res) => {
     const reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
 
     data = {};
-    console.log(req.body)
 
     User.findOne({ _id: req.params.id }, async function (err, user) {
         if (user) {
