@@ -60,8 +60,8 @@ const driver_create = async (req, res) => {
     reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
     req.body.licensePhoto = reqLicensePhotos;
     req.body.avatar = reqAvatar;
-    await Driver.deleteOne({ email: req.body.email }).then(function () {
-        console.log('deleted');
+    await Driver.findOne({ email: req.body.email }).then(function () {
+        res.status(422).send('The email is already in use.');
     });
     await hashPassword(req);
 

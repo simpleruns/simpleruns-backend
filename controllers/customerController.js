@@ -35,8 +35,8 @@ const customer_create = async (req, res) => {
 
     reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
     req.body.photo = reqAvatar;
-    await Customer.deleteOne({ email: req.body.email }).then(function () {
-        console.log('deleted');
+    await Customer.findOne({ email: req.body.email }).then(function () {
+        res.status(422).send('The email is already in use.');
     });
     await hashPassword(req);
     let customer = await new Customer(req.body);

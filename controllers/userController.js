@@ -13,8 +13,8 @@ const user_index = (req, res) => {
 
 // Create New CRUD
 const user_create = async (req, res) => {
-	await User.deleteOne({ email: req.body.email }).then(function () {
-		console.log('deleted');
+	await User.findOne({ email: req.body.email }).then(function () {
+		res.status(422).send('The email is already in use.');
 	});
 
 	await hashPassword(req);
