@@ -26,7 +26,7 @@ const DriverSchema = new mongoose.Schema({
     phone: {
         type: String
     },
-    licenseNumber: {
+    licenceNumber: {
         type: String,
     },
     expireDate: {
@@ -35,13 +35,13 @@ const DriverSchema = new mongoose.Schema({
     cardNumber: {
         type: String,
     },
-    licenseClass: {
+    licenceClass: {
         type: String
     },
-    licenseState: {
+    licenceState: {
         type: String,
     },
-    licensePhoto: {
+    licencePhoto: {
         type: Array
     },
     insuranceFile: {

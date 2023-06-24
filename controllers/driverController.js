@@ -43,14 +43,14 @@ const driver_create = async (req, res) => {
     })
 
     if (!flag) {
-        const reqLicensePhotos = [];
+        const reqLicencePhotos = [];
         const reqInsuranceFile = [];
         const reqWorkCompensationFile = [];
         const reqTruckRegistrationFile = [];
         const url = req.protocol + '://' + req.get('host');
 
-        for (var i = 0; i < req.files.licensePhoto.length; i++) {
-            reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
+        for (var i = 0; i < req.files.licencePhoto.length; i++) {
+            reqLicencePhotos.push({ 'type': req.files.licencePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licencePhoto[i].filename) })
         }
         if (req.body.role == 'subcontractor') {
             for (var i = 0; i < req.files.insuranceFile.length; i++) {
@@ -67,7 +67,7 @@ const driver_create = async (req, res) => {
             req.body.truckRegistrationFile = reqTruckRegistrationFile;
         }
         reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
-        req.body.licensePhoto = reqLicensePhotos;
+        req.body.licencePhoto = reqLicencePhotos;
         req.body.avatar = reqAvatar;
         await hashPassword(req);
 
@@ -105,7 +105,7 @@ const driver_update = async (req, res) => {
     })
 
     if (!flag) {
-        const reqLicensePhotos = [];
+        const reqLicencePhotos = [];
         const reqInsuranceFile = [];
         const reqWorkCompensationFile = [];
         const reqTruckRegistrationFile = [];
@@ -125,11 +125,11 @@ const driver_update = async (req, res) => {
             req.body.workCompensationFile = reqWorkCompensationFile;
             req.body.truckRegistrationFile = reqTruckRegistrationFile;
         }
-        for (var i = 0; i < req.files.licensePhoto.length; i++) {
-            reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
+        for (var i = 0; i < req.files.licencePhoto.length; i++) {
+            reqLicencePhotos.push({ 'type': req.files.licencePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licencePhoto[i].filename) })
         }
         reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
-        req.body.licensePhoto = reqLicensePhotos;
+        req.body.licencePhoto = reqLicencePhotos;
         req.body.avatar = reqAvatar;
 
         if (req.body.resetPassword) {
@@ -149,12 +149,12 @@ const driver_update = async (req, res) => {
                     driver.role = req.body.role;
                     driver.avatar = req.body.avatar;
                     driver.birthDate = req.body.birthDate;
-                    driver.licenseNumber = req.body.licenseNumber;
+                    driver.licenceNumber = req.body.licenceNumber;
                     driver.cardNumber = req.body.cardNumber;
                     driver.expireDate = req.body.expireDate;
-                    driver.licenseCalss = req.body.licenseCalss;
-                    driver.licenseState = req.body.licenseState;
-                    driver.licensePhoto = req.body.licensePhoto;
+                    driver.licenceCalss = req.body.licenceCalss;
+                    driver.licenceState = req.body.licenceState;
+                    driver.licencePhoto = req.body.licencePhoto;
                     driver.insuranceFile = req.body.insuranceFile;
                     driver.workCompensationFile = req.body.workCompensationFile;
                     driver.truckRegistrationFile = req.body.truckRegistrationFile;

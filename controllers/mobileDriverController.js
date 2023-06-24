@@ -12,12 +12,12 @@ const driver_create = async (req, res) => {
     console.log(req.files, req.body.expireDate, req.body.birthDate);
 
 
-    const reqLicensePhotos = [];
+    const reqLicencePhotos = [];
     const url = req.protocol + '://' + req.get('host');
 
 
-    for (var i = 0; i < req.files.licensePhoto.length; i++) {
-        reqLicensePhotos.push({ 'type': req.files.licensePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licensePhoto[i].filename) })
+    for (var i = 0; i < req.files.licencePhoto.length; i++) {
+        reqLicencePhotos.push({ 'type': req.files.licencePhoto[i].mimetype, 'url': (url + '/api/public/' + req.files.licencePhoto[i].filename) })
     }
     reqAvatar = { 'type': req.files.avatar[0].mimetype, 'url': (url + '/api/public/' + req.files.avatar[0].filename) };
     if (req.files.insurance) {
@@ -32,7 +32,7 @@ const driver_create = async (req, res) => {
     }
 
 
-    req.body.licensePhoto = reqLicensePhotos;
+    req.body.licencePhoto = reqLicencePhotos;
     req.body.avatar = reqAvatar;
     await Driver.deleteOne({ email: req.body.email }).then(function () {
         console.log('deleted');
