@@ -4,5 +4,6 @@ const mobileCustomerController = require("../../controllers/mobileCustomerContro
 
 
 router.post("/create", mobileCustomerController.customer_create);
+router.put("/:id", mobileCustomerController.customer_update);
 
 module.exports = router;
