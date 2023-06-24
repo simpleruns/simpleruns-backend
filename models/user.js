@@ -47,6 +47,12 @@ const UserSchema = new mongoose.Schema({
 	website: {
 		type: String
 	},
+	role: {
+		type: String
+	},
+	approved: {
+		type: Boolean
+	}
 });
 let User = mongoose.model('User', UserSchema);
 

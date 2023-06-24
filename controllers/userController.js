@@ -13,21 +13,30 @@ const user_index = (req, res) => {
 
 // Create New CRUD
 const user_create = async (req, res) => {
-	await User.findOne({ email: req.body.email }).then(function () {
-		res.status(422).send('The email is already in use.');
+	var flag = false;
+	await User.findOne({ email: req.body.email }).then(function (user) {
+		if (user) {
+			res.send('The email is already in use.');
+			flag = true;
+		}
 	});
 
-	await hashPassword(req);
+	if (!flag) {
+		await hashPassword(req);
 
-	let user = await new User(req.body);
-	await user
-		.save()
-		.then((user) => {
-			res.send(user);
-		})
-		.catch(function (err) {
-			res.status(422).send("user add failed");
-		});
+		let user = await new User(req.body);
+		user.role = 'admin';
+		user.approved = false;
+
+		await user
+			.save()
+			.then((user) => {
+				res.send(user);
+			})
+			.catch(function (err) {
+				res.status(422).send("user add failed");
+			});
+	}
 };
 
 // Show a particular CRUD Detail by Id
@@ -37,7 +46,6 @@ const user_login = (req, res) => {
 			res.status(404).send("This email doesn't exist!");
 		} else {
 			const isMatch = bcrypt.compare(req.body.password, user.password);
-			console.log(isMatch);
 			if (isMatch) {
 				const payload = {
 					user: {

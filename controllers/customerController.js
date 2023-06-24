@@ -20,9 +20,9 @@ const customer_index = (req, res) => {
         totalCount = customers.length;
         if (req.query.page) {
             var from, to;
-            from = parseInt(req.query.page) * 10;
-            to = parseInt(req.query.page + 1) * 10 - 1;
-            customers.slice(from, to);
+            from = (parseInt(req.query.page) - 1) * 10;
+            to = parseInt(req.query.page) * 10 - 1;
+            customers = customers.slice(from, to);
         }
 
         res.json({ customers, totalCount });
@@ -31,24 +31,31 @@ const customer_index = (req, res) => {
 
 // Create New Customer
 const customer_create = async (req, res) => {
+    var flag = false;
     const url = req.protocol + '://' + req.get('host');
 
     reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
     req.body.photo = reqAvatar;
-    await Customer.findOne({ email: req.body.email }).then(function () {
-        res.status(422).send('The email is already in use.');
+    await Customer.findOne({ email: req.body.email }).then(function (customer) {
+        if (customer) {
+            res.send('The email is already in use.');
+            flag = true;
+        }
     });
-    await hashPassword(req);
-    let customer = await new Customer(req.body);
-    await customer
-        .save()
-        .then((customer) => {
-            res.send(customer);
-        })
-        .catch(function (err) {
-            console.log(err);
-            res.status(422).send("customer add failed");
-        });
+
+    if (!flag) {
+        await hashPassword(req);
+        let customer = await new Customer(req.body);
+        await customer
+            .save()
+            .then((customer) => {
+                res.send(customer);
+            })
+            .catch(function (err) {
+                console.log(err);
+                res.status(422).send("customer add failed");
+            });
+    }
 };
 
 const customer_getOne = async (req, res) => {
@@ -62,20 +69,29 @@ const customer_getOne = async (req, res) => {
 }
 
 const customer_update = async (req, res) => {
-    const url = req.protocol + '://' + req.get('host');
+    var flag = false;
 
-    reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
-    req.body.photo = reqAvatar;
-    console.log(req.params.id, req.body)
+    await Customer.findOne({ email: req.body.email }).then(function (customer) {
+        if (customer) {
+            res.send('The email is already in use.');
+            flag = true;
+        }
+    });
 
-    await Customer.findByIdAndUpdate(req.params.id, req.body)
-        .then(function (customer) {
-            res.json("Customers  updated");
-        })
-        .catch(function (err) {
-            res.status(422).send("Customers update failed.");
-        });
+    if (!flag) {
+        const url = req.protocol + '://' + req.get('host');
 
+        reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
+        req.body.photo = reqAvatar;
+
+        await Customer.findByIdAndUpdate(req.params.id, req.body)
+            .then(function (customer) {
+                res.json("Customers  updated");
+            })
+            .catch(function (err) {
+                res.status(422).send("Customers update failed.");
+            });
+    }
 };
 
 // Delete driver Detail by Id

@@ -183,68 +183,90 @@ const user_index = async (req, res) => {
 }
 
 const user_update = async (req, res) => {
-    const url = req.protocol + '://' + req.get('host');
+    var flag = false;
 
-    const reqLogo = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
-
-    data = {};
-
-    User.findOne({ _id: req.params.id }, async function (err, user) {
+    await User.findOne({ email: req.body.email }).then(function (user) {
         if (user) {
-            user.bank = req.body.bank;
-            user.address = req.body.address;
-            user.bsb = req.body.bsb;
-            user.accountNo = req.body.accountNo;
-            user.company = req.body.company;
-            user.api = req.body.api;
-            user.logo = reqLogo;
-            user.abn = req.body.abn;
-            user.website = req.body.website;
-
-            await user
-                .save()
-                .then((user) => {
-                    res.send(user);
-                })
-                .catch(function (err) {
-                    res.status(422).send("User update failed");
-                });
-
-        } else {
-            res.status(404).send("User not found");
+            res.send('The email is already in use.');
+            flag = true;
         }
-    })
+    });
+
+    if (!flag) {
+        const url = req.protocol + '://' + req.get('host');
+
+        const reqLogo = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
+
+        data = {};
+
+        User.findOne({ _id: req.params.id }, async function (err, user) {
+            if (user) {
+                user.bank = req.body.bank;
+                user.address = req.body.address;
+                user.bsb = req.body.bsb;
+                user.accountNo = req.body.accountNo;
+                user.company = req.body.company;
+                user.api = req.body.api;
+                user.logo = reqLogo;
+                user.abn = req.body.abn;
+                user.website = req.body.website;
+
+                await user
+                    .save()
+                    .then((user) => {
+                        res.send(user);
+                    })
+                    .catch(function (err) {
+                        res.status(422).send("User update failed");
+                    });
+
+            } else {
+                res.status(404).send("User not found");
+            }
+        })
+    }
 }
 
 const user_update1 = async (req, res) => {
-    const url = req.protocol + '://' + req.get('host');
+    var flag = false;
 
-    const reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
-
-    data = {};
-
-    User.findOne({ _id: req.params.id }, async function (err, user) {
+    await User.findOne({ email: req.body.email }).then(function (user) {
         if (user) {
-            user.firstname = req.body.firstname;
-            user.lastname = req.body.lastname;
-            user.phone = req.body.phone;
-            user.email = req.body.email;
-            user.avatar = reqAvatar;
-            console.log(user)
-
-            await user
-                .save()
-                .then((user) => {
-                    res.send(user);
-                })
-                .catch(function (err) {
-                    res.status(422).send("User update failed");
-                });
-
-        } else {
-            res.status(404).send("User not found");
+            res.send('The email is already in use.');
+            flag = true;
         }
-    })
+    });
+
+    if (!flag) {
+        const url = req.protocol + '://' + req.get('host');
+
+        const reqAvatar = { 'url': (url + '/api/public/' + req.file.filename), 'type': req.file.mimetype };
+
+        data = {};
+
+        User.findOne({ _id: req.params.id }, async function (err, user) {
+            if (user) {
+                user.firstname = req.body.firstname;
+                user.lastname = req.body.lastname;
+                user.phone = req.body.phone;
+                user.email = req.body.email;
+                user.avatar = reqAvatar;
+                console.log(user)
+
+                await user
+                    .save()
+                    .then((user) => {
+                        res.send(user);
+                    })
+                    .catch(function (err) {
+                        res.status(422).send("User update failed");
+                    });
+
+            } else {
+                res.status(404).send("User not found");
+            }
+        })
+    }
 }
 
 const google_map = async (req, res) => {
