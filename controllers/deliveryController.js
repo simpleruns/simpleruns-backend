@@ -16,10 +16,13 @@ const delivery_index = (req, res) => {
 };
 
 const delivery_create = async (req, res) => {
-    console.log('2342423');
+    console.log('****************** CREATE DELIVERY **************');
+    console.log(req.body);
     await Customer.findById(req.body.customer, async function (err, customer) {
         if (customer) {
             req.body.hourlyRate = customer.localRate;
+            console.log("========== CUSTOMER =============");
+            console.log(customer)
             req.body.fuelLevy = customer.localRate * req.body.totalHour * customer.fuelLevy / 100;
             req.body.subTotal = customer.localRate * req.body.totalHour + req.body.fuelLevy + req.body.tolls;
             req.body.GST = req.body.subTotal * 0.1;

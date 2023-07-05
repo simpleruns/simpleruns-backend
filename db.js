@@ -1,10 +1,13 @@
-require("dotenv").config();
+if (process.env.NODE_ENV === 'production') {
+	require('dotenv').config({ path: '.env' });
+} else {
+	require('dotenv').config({ path: '.env.development' });
+}
 const mongoose = require("mongoose");
 
 module.exports = () => {
 	const connection = mongoose
-		.connect('mongodb+srv://ricardo:machao@cluster0.bvdzxs2.mongodb.net/simpleruns')
-		// .connect('mongodb://localhost:27017/simpleruns')
+		.connect(process.env.DATABASE_URL)
 		.then((result) => console.log("Connected to database"))
 		.catch((err) => console.log("could not connect to database"));
 };

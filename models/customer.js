@@ -21,18 +21,23 @@ const CustomerSchema = new mongoose.Schema({
     },
     localRate: {
         type: Number,
+        default: 0.0,
     },
     countryRate: {
-        type: Number
+        type: Number,
+        default: 0.0,
     },
     loadRate: {
-        type: Number
+        type: Number,
+        default: 0.0,
     },
     fuelLevy: {
-        type: Number
+        type: Number,
+        default: 0.0,
     },
     approved: {
-        type: Boolean
+        type: Boolean,
+        default: false,
     },
     abn: {
         type: String
